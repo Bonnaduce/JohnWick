@@ -37,6 +37,7 @@ module.exports = (client) => {
   // getSettings merges the client defaults with the guild settings. guild settings in
   // enmap should only have *unique* overrides that are different from defaults.
   client.getSettings = (guild) => {
+    
     if(!guild) return client.settings.get("default");
     const guildConf = client.settings.get(guild.id) || {};
     // This "..." thing is the "Spread Operator". It's awesome!
@@ -98,7 +99,7 @@ module.exports = (client) => {
     text = text
       .replace(/`/g, "`" + String.fromCharCode(8203))
       .replace(/@/g, "@" + String.fromCharCode(8203))
-      .replace(client.token, "mfa.VkO_2G4Qv3T--NO--lWetW_tjND--TOKEN--QFTm6YGtzq9PH--4U--tG0");
+      .replace(client.token, "NTY3NDQxMzAxODIyMjQyODI1.XLXlQQ.qI9LvuVOvdK9O5fsxlkVQ3sRlvE");
 
     return text;
   };

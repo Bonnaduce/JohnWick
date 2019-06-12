@@ -13,7 +13,7 @@
 exports.run = async (client, message, [action, key, ...value], level) => { // eslint-disable-line no-unused-vars
 
   // Retrieve current guild settings (merged) and overrides only.
-  const settings = message.settings;
+  const settings = client.getSettings(message.guild);//message.settings;
   const defaults = client.config.defaultSettings;
   const overrides = client.settings.get(message.guild.id);
   if (!client.settings.has(message.guild.id)) client.settings.set(message.guild.id, {});
@@ -28,7 +28,7 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
     // User must specify a value to change.
     if (joinedValue.length < 1) return message.reply("Please specify a new value");
     // User must specify a different value than the current one.
-    if (joinedValue === settings[key]) return message.reply("This setting already has that value!");
+    //if (joinedValue === settings[key]) return message.reply("This setting already has that value!");
     
     // If the guild does not have any overrides, initialize it.
     if (!client.settings.has(message.guild.id)) client.settings.set(message.guild.id, {});

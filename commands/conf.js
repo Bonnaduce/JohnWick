@@ -85,7 +85,7 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
 exports.conf = {
   enabled: true,
   guildOnly: true,
-  aliases: ["defaults"],
+  aliases: ["defaults,def"],
   permLevel: "Bot Admin"
 };
 

@@ -10,7 +10,6 @@ module.exports = async (client, message) => {
   // Grab the settings for this server from Enmap.
   // If there is no guild, get default conf (DMs)
   const settings = client.getSettings(message.guild);
-
   // Checks if the bot was mentioned, with no message after it, returns the prefix.
   const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
   if (message.content.match(prefixMention)) {
@@ -66,5 +65,6 @@ module.exports = async (client, message) => {
   }
   // If the command exists, **AND** the user has permission, run it.
   client.logger.cmd(`[CMD] ${client.config.permLevels.find(l => l.level === level).name} ${message.author.username} (${message.author.id}) ran command ${cmd.help.name}`);
+  //console.log(client.settings);
   cmd.run(client, message, args, level);
 };

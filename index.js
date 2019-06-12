@@ -2,7 +2,6 @@
 // Node version, if it isn't it will throw the following error to inform
 // you.
 if (Number(process.version.slice(1).split(".")[0]) < 8) throw new Error("Node 8.0.0 or higher is required. Update Node on your system.");
-
 // Load up the discord.js library
 const Discord = require("discord.js");
 // We also load the rest of the things we need in this file:
@@ -64,7 +63,7 @@ const init = async () => {
     // This line is awesome by the way. Just sayin'.
     client.on(eventName, event.bind(null, client));
   });
-
+  
   // Generate a cache of client permissions for pretty perm names in commands.
   client.levelCache = {};
   for (let i = 0; i < client.config.permLevels.length; i++) {
