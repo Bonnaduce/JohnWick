@@ -7,6 +7,30 @@ module.exports = async (client, message) => {
   // and not get into a spam loop (we call that "botception").
   if (message.author.bot) return;
 
+  let score;
+  if (message.guild) {
+    score = client.getScore.get(message.author.id, message.guild.id);
+    if (!score) {
+      score = { id: `${message.guild.id}-${message.author.id}`, user: message.author.id, guild: message.guild.id, points: 0, level: 1 }
+    }
+    score.points++;
+    const curLevel = Math.floor(0.1 * Math.sqrt(score.points));
+    if(score.level < curLevel) {
+      score.level++;
+      message.reply(`Has subido de nivel, ahora eres nivel **${curLevel}**! Ahhhh prrrrrooo`);
+    }
+    client.setScore.run(score);
+  }
+  if (!score) {
+    score = {
+      id: `${message.guild.id}-${message.author.id}`,
+      user: message.author.id,
+      guild: message.guild.id,
+      points: 0,
+      level: 1
+    }
+  }
+
   // Grab the settings for this server from Enmap.
   // If there is no guild, get default conf (DMs)
   const settings = message.settings = client.getSettings(message.guild);
@@ -14,7 +38,7 @@ module.exports = async (client, message) => {
   // Checks if the bot was mentioned, with no message after it, returns the prefix.
   const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
   if (message.content.match(prefixMention)) {
-    return message.reply(`My prefix on this guild is \`${settings.prefix}\``);
+    return message.reply(`Mi prefijo en este canal es \`${settings.prefix}\``);
   }
 
   // Also good practice to ignore any message that does not start with our prefix,
@@ -44,13 +68,13 @@ module.exports = async (client, message) => {
   // Some commands may not be useable in DMs. This check prevents those commands from running
   // and return a friendly error message.
   if (cmd && !message.guild && cmd.conf.guildOnly)
-    return message.channel.send("This command is unavailable via private message. Please run this command in a guild.");
+    return message.channel.send("Este comando no está disponible en DM. Por favor ejecuta el comando en el canal adecuado.");
 
   if (level < client.levelCache[cmd.conf.permLevel]) {
     if (settings.systemNotice === "true") {
-      return message.channel.send(`You do not have permission to use this command.
-  Your permission level is ${level} (${client.config.permLevels.find(l => l.level === level).name})
-  This command requires level ${client.levelCache[cmd.conf.permLevel]} (${cmd.conf.permLevel})`);
+      return message.channel.send(`No tienes permisos suficientes para ejecutar este comando.
+  Tu nivel de permisos es ${level} (${client.config.permLevels.find(l => l.level === level).name})
+  Este comando requiere un nivel de ${client.levelCache[cmd.conf.permLevel]} (${cmd.conf.permLevel})`);
     } else {
       return;
     }

@@ -13,13 +13,13 @@ exports.run = async (client, message, args, level) => {// eslint-disable-line no
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: [],
+  aliases: ["recarga"],
   permLevel: "Bot Admin"
 };
 
 exports.help = {
   name: "reload",
   category: "System",
-  description: "Reloads a command that\"s been modified.",
-  usage: "reload [command]"
+  description: "Recarga un comando que haya sido modificado.",
+  usage: "reload <command>"
 };

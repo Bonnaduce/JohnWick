@@ -18,15 +18,15 @@ exports.run = async (client, message, [action, key,...value]) => { // eslint-dis
    );
     //Login into EpicGames API
    fortniteAPI.login().then(() => {
-    fortniteAPI
-        .checkPlayer("Bonnaduce", "pc")
+    /*fortniteAPI
+        .checkPlayer("Bonnaduce", "ps4")
         .then(stats => {
             console.log(stats);//Full stats for check existence of player with params checkPlayer(playerID, platform)
             message.reply(stats[1].name);
         })
         .catch(err => {
             console.log(err);
-        });/*
+        });*/
     fortniteAPI
         .getStatsBR("Bonnaduce", "ps4", "alltime")
         .then(stats => {
@@ -34,7 +34,7 @@ exports.run = async (client, message, [action, key,...value]) => { // eslint-dis
         })
         .catch(err => {
             console.log(err);
-        });
+        });/*
     fortniteAPI
         .getFortniteNews("es")
         .then(news => {
@@ -124,13 +124,13 @@ exports.run = async (client, message, [action, key,...value]) => { // eslint-dis
 exports.conf = {
   enabled: true,
   guildOnly: true,
-  aliases: ["forna"],
+  aliases: ["fortni","forna","fornais"],
   permLevel: "User"
 };
 
 exports.help = {
-  name: "forna",
-  category: "Player",
+  name: "fortnite",
+  category: "Games",
   description: "View stats in Fortnite.",
   usage: "fortnite <view(ver)/compare(compara)/shop(tienda)> <ID/VACIO><ID/VACIO>"
 };

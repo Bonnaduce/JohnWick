@@ -59,6 +59,18 @@ module.exports = (client) => {
     return ({...client.settings.get("default"), ...guildConf});
   };
 
+  // writeSettings overrides, or adds, any configuration item that is different
+  // than the defaults. This ensures less storage wasted and to detect overrides.
+  client.writeSettings = (id, newSettings) => {
+    const defaults = client.settings.get("default");
+    let settings = client.settings.get(id) || {};
+    // Using the spread operator again, and lodash's "pickby" function to remove any key
+    // from the settings that aren't in the defaults (meaning, they don't belong there)
+    client.settings.set(id, {
+      ..._.pickBy(settings, (v, k) => !_.isNil(defaults[k])),
+      ..._.pickBy(newSettings, (v, k) => !_.isNil(defaults[k]))
+    });
+  };
   /*
   SINGLE-LINE AWAITMESSAGE
 

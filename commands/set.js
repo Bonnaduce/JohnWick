@@ -86,6 +86,6 @@ exports.conf = {
 exports.help = {
   name: "set",
   category: "System",
-  description: "View or change settings for your server.",
+  description: "Muestra o cambia las configuraciones del bot.",
   usage: "set <view/get/edit> <key> <value>"
 };

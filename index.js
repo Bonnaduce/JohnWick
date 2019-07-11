@@ -8,11 +8,23 @@ const Discord = require("discord.js");
 const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
 const Enmap = require("enmap");
+const SQLite = require("better-sqlite3");
+const sql = new SQLite('./assets/bd/scores.sqlite');
 
 // This is your client. Some people call it `bot`, some people call it `self`,
 // some might call it `cootchie`. Either way, when you see `client.something`,
 // or `bot.something`, this is what we're refering to. Your client.
 const client = new Discord.Client();
+// Check if the table "points" exists.
+const table = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'scores';").get();
+if (!table['count(*)']) {
+  // If the table isn't there, create it and setup the database correctly.
+  sql.prepare("CREATE TABLE scores (id TEXT PRIMARY KEY, user TEXT, guild TEXT, points INTEGER, level INTEGER);").run();
+  // Ensure that the "id" row is always unique and indexed.
+  sql.prepare("CREATE UNIQUE INDEX idx_scores_id ON scores (id);").run();
+  sql.pragma("synchronous = 1");
+  sql.pragma("journal_mode = wal");
+}
 
 // Here we load the config file that contains our token and our prefix values.
 client.config = require("./config.js");
@@ -25,6 +37,8 @@ client.logger = require("./modules/Logger");
 // Let's start by getting some useful functions that we'll use throughout
 // the bot, like logs and elevation features.
 require("./modules/functions.js")(client);
+client.getScore = sql.prepare("SELECT * FROM scores WHERE user = ? AND guild = ?");
+client.setScore = sql.prepare("INSERT OR REPLACE INTO scores (id, user, guild, points, level, daily) VALUES (@id, @user, @guild, @points, @level, @daily);");
 
 // Aliases and commands are put in collections where they can be read from,
 // catalogued, listed, etc.
